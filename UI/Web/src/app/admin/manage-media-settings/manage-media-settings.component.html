@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <form [formGroup]="settingsForm" *ngIf="serverSettings !== undefined">
+
+        <div class="row g-0">
+            <p>WebP can drastically reduce space requirements for files. WebP is not supported on all browsers or versions. To learn if these settings are appropriate for your setup, visit <a href="https://caniuse.com/?search=webp" target="_blank" rel="noopener noreferrer">Can I Use</a>.</p>
+            <div *ngIf="settingsForm.dirty" class="alert alert-danger" role="alert">You must trigger the conversion to WebP task in Tasks Tab.</div>
+            <div class="col-md-6 col-sm-12 mb-3">
+                <label for="bookmark-webp" class="form-label me-1" aria-describedby="settings-convertBookmarkToWebP-help">Save Bookmarks as WebP</label>
+                <i class="fa fa-info-circle" placement="right" [ngbTooltip]="convertBookmarkToWebPTooltip" role="button" tabindex="0"></i>
+                <ng-template #convertBookmarkToWebPTooltip>When saving bookmarks, convert them to WebP.</ng-template>
+                <span class="visually-hidden" id="settings-convertBookmarkToWebP-help"><ng-container [ngTemplateOutlet]="convertBookmarkToWebPTooltip"></ng-container></span>
+                <div class="form-check form-switch">
+                    <input id="bookmark-webp" type="checkbox" class="form-check-input" formControlName="convertBookmarkToWebP" role="switch">
+                    <label for="bookmark-webp" class="form-check-label" aria-describedby="settings-convertBookmarkToWebP-help">{{settingsForm.get('convertBookmarkToWebP')?.value ? 'WebP' : 'Original' }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12 mb-3">
+                <label for="cover-webp" class="form-label me-1" aria-describedby="settings-convertCoverToWebP-help">Save Covers as WebP</label>
+                <i class="fa fa-info-circle" placement="right" [ngbTooltip]="convertCoverToWebPTooltip" role="button" tabindex="0"></i>
+                <ng-template #convertCoverToWebPTooltip>When generating covers, convert them to WebP.</ng-template>
+                <span class="visually-hidden" id="settings-convertCoverToWebP-help"><ng-container [ngTemplateOutlet]="convertBookmarkToWebPTooltip"></ng-container></span>
+                <div class="form-check form-switch">
+                    <input id="cover-webp" type="checkbox" class="form-check-input" formControlName="convertCoverToWebP" role="switch">
+                    <label for="cover-webp" class="form-check-label" aria-describedby="settings-convertCoverToWebP-help">{{settingsForm.get('convertCoverToWebP')?.value ? 'WebP' : 'Original' }}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-auto d-flex d-md-block justify-content-sm-center text-md-end">
+            <button type="button" class="flex-fill btn btn-secondary me-2" (click)="resetToDefaults()">Reset to Default</button>
+            <button type="button" class="flex-fill btn btn-secondary me-2" (click)="resetForm()">Reset</button>
+            <button type="submit" class="flex-fill btn btn-primary" (click)="saveSettings()" [disabled]="!settingsForm.dirty">Save</button>
+        </div>
+    </form>
+
+    <!-- Accordion with Issues from Media anaysis -->
+
+</div>

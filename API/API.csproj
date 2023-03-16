@@ -1,0 +1,197 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <AnalysisMode>Default</AnalysisMode>
+    <TargetFramework>net7.0</TargetFramework>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <TieredPGO>true</TieredPGO>
+    <TieredCompilation>true</TieredCompilation>
+    <ApplicationIcon>../favicon.ico</ApplicationIcon>
+    <Nullable>warnings</Nullable>
+    <LangVersion>latestmajor</LangVersion>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="Build" Condition=" '$(Configuration)' == 'Debug' ">
+      <Exec Command="swagger tofile --output ../openapi.json bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).dll v1" />
+  </Target>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <ApplicationIcon>../favicon.ico</ApplicationIcon>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+    <!-- Ignore XML comments -->
+    <PropertyGroup>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+  <!-- Set the Product and Version info for our own projects -->
+  <PropertyGroup>
+    <Product>Kavita</Product>
+    <Company>kareadita.github.io</Company>
+    <Copyright>Copyright 2020-$([System.DateTime]::Now.ToString('yyyy')) kavitareader.com (GNU General Public v3)</Copyright>
+
+    <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
+
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+
+    <Deterministic Condition="$(AssemblyVersion.EndsWith('*'))">False</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="Docnet.Core" Version="2.4.0-alpha.4" />
+    <PackageReference Include="ExCSS" Version="4.1.0" />
+    <PackageReference Include="Flurl" Version="3.0.7" />
+    <PackageReference Include="Flurl.Http" Version="3.2.4" />
+    <PackageReference Include="Hangfire" Version="1.7.33" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.33" />
+    <PackageReference Include="Hangfire.InMemory" Version="0.3.6" />
+    <PackageReference Include="Hangfire.MaximumConcurrentExecutions" Version="1.1.0" />
+    <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
+    <PackageReference Include="Hangfire.Storage.SQLite" Version="0.3.3" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="MarkdownDeep.NET.Core" Version="1.5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.3.2" />
+    <PackageReference Include="NetVips" Version="2.2.0" />
+    <PackageReference Include="NetVips.Native" Version="8.13.2" />
+    <PackageReference Include="NReco.Logging.File" Version="1.1.6" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.2.0-dev-00752" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.AspNetCore.SignalR" Version="0.4.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.SignalR.Core" Version="0.1.2" />
+    <PackageReference Include="SharpCompress" Version="0.32.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.53.0.62665">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="19.2.1" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+    <PackageReference Include="VersOne.Epub" Version="3.3.0-alpha1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kavita.Common\Kavita.Common.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <None Remove="Hangfire-log.db" />
+    <None Remove="obj\**" />
+    <None Remove="cache\**" />
+    <None Remove="backups\**" />
+    <None Remove="logs\**" />
+    <None Remove="temp\**" />
+    <None Remove="kavita.log" />
+    <None Remove="kavita.db" />
+    <None Remove="covers\**" />
+    <None Remove="wwwroot\**" />
+    <None Remove="config\cache\**" />
+    <None Remove="config\logs\**" />
+    <None Remove="config\covers\**" />
+    <None Remove="config\bookmarks\**" />
+    <None Remove="config\backups\**" />
+    <None Remove="config\temp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="obj\**" />
+    <Compile Remove="cache\**" />
+    <Compile Remove="backups\**" />
+    <Compile Remove="logs\**" />
+    <Compile Remove="temp\**" />
+    <Compile Remove="covers\**" />
+    <Compile Remove="wwwroot\**" />
+    <Compile Remove="config\cache\**" />
+    <Compile Remove="config\logs\**" />
+    <Compile Remove="config\covers\**" />
+    <Compile Remove="config\bookmarks\**" />
+    <Compile Remove="config\backups\**" />
+    <Compile Remove="config\temp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="obj\**" />
+    <EmbeddedResource Remove="cache\**" />
+    <EmbeddedResource Remove="backups\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <EmbeddedResource Remove="temp\**" />
+    <EmbeddedResource Remove="covers\**" />
+    <EmbeddedResource Remove="config\covers\**" />
+    <EmbeddedResource Remove="config\backups\**" />
+    <EmbeddedResource Remove="config\logs\**" />
+    <EmbeddedResource Remove="config\temp\**" />
+    <EmbeddedResource Remove="config\stats\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <EmbeddedResource Remove="config\cache\**" />
+    <EmbeddedResource Remove="config\bookmarks\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="obj\**" />
+    <Content Remove="cache\**" />
+    <Content Remove="backups\**" />
+    <Content Remove="logs\**" />
+    <Content Remove="temp\**" />
+    <Content Remove="config\stats\**" />
+    <Content Remove="config\cache\**" />
+    <Content Remove="config\backups\**" />
+    <Content Remove="config\logs\**" />
+    <Content Remove="config\temp\**" />
+    <Content Remove="config\stats\**" />
+    <Content Condition=" '$(Configuration)' == 'Release' " Remove="appsettings.Development.json" />
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Remove="covers\**" />
+    <Content Remove="config\covers\**" />
+    <Content Update="bin\$(Configuration)\$(AssemblyName).xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Remove="config\bookmarks\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="config\themes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_DeploymentManifestIconFile Remove="favicon.ico" />
+  </ItemGroup>
+
+</Project>
